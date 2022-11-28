@@ -1,30 +1,11 @@
 import { component$, useServerMount$, useStore } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
-
-export type ImageType = {
-  id: number;
-  JobID: number;
-  key: string;
-  name: string;
-  local_url: string;
-  bucket_url: string;
-  is_selected: boolean;
-};
-
-export type Data = {
-  id: number;
-  CustomerID: number;
-  aws_id: string;
-  status: number;
-  length: number;
-  images: ImageType[];
-};
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const loc = useLocation();
   const uid: string = loc.query.uid;
   const folderid: string = loc.query.folder;
-  let data: Data = {
+  let data = {
     id: 0,
     CustomerID: 0,
     aws_id: "",
@@ -33,6 +14,7 @@ export default component$(() => {
     images: [],
   };
   const store = useStore({ data: data }, { recursive: true });
+  const nav = useNavigate();
   useServerMount$(async () => {
     const url =
       "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
@@ -41,6 +23,21 @@ export default component$(() => {
       folderid;
     const res = await fetch(url);
     store.data = await res.json();
+
+    // when i try this same code which is used on button it works fine
+    const result = await fetch(
+      "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
+      {
+        method: "POST",
+        body: JSON.stringify(store.data),
+
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    ).then((json) => json.json());
+
+    console.log(JSON.stringify(result, null, 2));
   });
 
   return (
@@ -53,12 +50,7 @@ export default component$(() => {
       <dialog>Heelo</dialog>
       <div className="grid lg:grid-cols-4 gap-10 p-5 ">
         {store.data.images.map((image) => (
-          <button
-            onClick$={() => {
-              image.is_selected = !image.is_selected;
-              console.log(image.is_selected);
-            }}
-          >
+          <button onClick$={() => (image.is_selected = !image.is_selected)}>
             <img
               src={image.bucket_url}
               className="pointer-events-none hover:shadow-2xl rounded-xl"
@@ -85,37 +77,52 @@ export default component$(() => {
       <div className="sticky bottom-0 flex flex-row bg-white lg:justify-end justify-between items-center  px-5 min-w-screen">
         <button
           onClick$={async () => {
-            store.data.status = 1
-            const result = await fetch(
+            store.data.status = 1;
+            await fetch(
               "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
-                mode: 'no-cors',
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
+
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                },
               }
-            ).then((json) => json.json());
-            console.log("hello");
-            console.log(JSON.stringify(result));
+            ).then((result) => {
+              if (result.status == 200) {
+                console.log("Done");
+                nav.path = "/done";
+              } else {
+                nav.path = "/failed";
+              }
+            });
           }}
           className="m-3 flex items-center justify-center rounded-full  peer-hover:bg-indigo-600 py-2 px-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 "
         >
           Save Selection
         </button>
+        <a href="/done"> Done</a>
         <button
           onClick$={async () => {
             store.data.status = 2;
-            const result = await fetch(
+            await fetch(
               "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
+
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                },
               }
-            ).then((json) => json.json());
-            console.log("hello");
-            console.log(JSON.stringify(result));
+            ).then((result) => {
+              if (result.status == 200) {
+                console.log("Done");
+                nav.path = "/done";
+              } else {
+                nav.path = "/failed";
+              }
+            });
           }}
           className="m-3 flex items-center justify-center rounded-full  peer-hover:bg-indigo-600 py-2 px-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 "
         >
@@ -125,4 +132,3 @@ export default component$(() => {
     </div>
   );
 });
-
