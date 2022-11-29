@@ -27,6 +27,7 @@ export default component$(() => {
     console.log(res);
     console.log(store.data);
   });
+  console.log(store.data);
 
   return (
     <div className="w-auto h-auto">
@@ -65,6 +66,8 @@ export default component$(() => {
         <button
           onClick$={async () => {
             store.data.status = 1;
+            console.log(store.data);
+
             await fetch(
               "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
@@ -89,6 +92,8 @@ export default component$(() => {
         <button
           onClick$={async () => {
             store.data.status = 2;
+            console.log(store.data);
+
             await fetch(
               "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
