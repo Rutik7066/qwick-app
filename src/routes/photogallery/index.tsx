@@ -5,7 +5,7 @@ export default component$(() => {
   const loc = useLocation();
   const uid: string = loc.query.uid;
   const folderid: string = loc.query.folder;
-  let data = {
+  const data = {
     id: 0,
     CustomerID: 0,
     aws_id: "",
@@ -23,21 +23,6 @@ export default component$(() => {
       folderid;
     const res = await fetch(url);
     store.data = await res.json();
-
-    // when i try this same code which is used on button it works fine
-    const result = await fetch(
-      "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:3000/updatefolder",
-      {
-        method: "POST",
-        body: JSON.stringify(store.data),
-
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    ).then((json) => json.json());
-
-    console.log(JSON.stringify(result, null, 2));
   });
 
   return (
@@ -47,7 +32,6 @@ export default component$(() => {
           Photo Gallery
         </a>
       </div>
-      <dialog>Heelo</dialog>
       <div className="grid lg:grid-cols-4 gap-10 p-5 ">
         {store.data.images.map((image) => (
           <button onClick$={() => (image.is_selected = !image.is_selected)}>
@@ -83,7 +67,6 @@ export default component$(() => {
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
-
                 headers: {
                   "Content-type": "application/json; charset=UTF-8",
                 },
@@ -91,9 +74,9 @@ export default component$(() => {
             ).then((result) => {
               if (result.status == 200) {
                 console.log("Done");
-                nav.path = "/done";
+                nav.path = "/saved";
               } else {
-                nav.path = "/failed";
+                nav.path = "/savefailed";
               }
             });
           }}
@@ -101,7 +84,6 @@ export default component$(() => {
         >
           Save Selection
         </button>
-        <a href="/done"> Done</a>
         <button
           onClick$={async () => {
             store.data.status = 2;
@@ -118,9 +100,9 @@ export default component$(() => {
             ).then((result) => {
               if (result.status == 200) {
                 console.log("Done");
-                nav.path = "/done";
+                nav.path = "/selectiondone";
               } else {
-                nav.path = "/failed";
+                nav.path = "/selectionfailed";
               }
             });
           }}
