@@ -1,11 +1,10 @@
-import { component$,   useServerMount$,  useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const loc = useLocation();
   const uid: string = loc.query.uid;
   const folderid: string = loc.query.folder;
-  console.log(uid, folderid);
 
   const data = {
     id: 0,
@@ -18,9 +17,10 @@ export default component$(() => {
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
 
-  useServerMount$(async () => {
+  useClientEffect$(async () => {
+    console.log(uid, folderid);
     const url =
-      "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/getfolder?uid=" +
+      "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/getfolder?uid=" +
       uid +
       "&aws_id=" +
       folderid;
@@ -31,7 +31,6 @@ export default component$(() => {
     console.log(res);
     console.log(store.data);
   });
-  
 
   return (
     <div className="w-auto h-auto">
@@ -73,7 +72,7 @@ export default component$(() => {
             console.log(store.data);
 
             await fetch(
-              "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
+              "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -87,7 +86,7 @@ export default component$(() => {
 
                 nav.path = "/saved";
               } else {
-                      console.log("Failed");
+                console.log("Failed");
 
                 nav.path = "/savefailed";
               }
@@ -102,7 +101,7 @@ export default component$(() => {
             store.data.status = 2;
             console.log(store.data);
             await fetch(
-              "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
+              "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -117,7 +116,7 @@ export default component$(() => {
 
                 nav.path = "/selectiondone";
               } else {
-                      console.log("Failed");
+                console.log("Failed");
                 nav.path = "/selectionfailed";
               }
             });
