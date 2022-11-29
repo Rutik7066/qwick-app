@@ -20,7 +20,7 @@ export default component$(() => {
   useMount$(async () => {
     console.log(uid, folderid);
     const url =
-      "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/getfolder?uid=" +
+      "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:80/getfolder?uid=" +
       uid +
       "&aws_id=" +
       folderid;
@@ -71,7 +71,7 @@ export default component$(() => {
             console.log(store.data);
 
             await fetch(
-              "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
+              "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:80/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -100,7 +100,7 @@ export default component$(() => {
             store.data.status = 2;
             console.log(store.data);
             await fetch(
-              "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/updatefolder",
+              "http://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:80/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
