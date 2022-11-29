@@ -1,4 +1,4 @@
-import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
+import { component$, useMount$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
@@ -17,7 +17,7 @@ export default component$(() => {
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
 
-  useClientEffect$(async () => {
+  useMount$(async () => {
     console.log(uid, folderid);
     const url =
       "https://ec2-65-0-55-55.ap-south-1.compute.amazonaws.com:443/getfolder?uid=" +
