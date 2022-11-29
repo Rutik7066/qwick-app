@@ -24,6 +24,7 @@ export default component$(() => {
       folderid;
     const res = await fetch(url);
     store.data = await res.json();
+    console.log(store.data);
   });
 
   return (
@@ -74,7 +75,6 @@ export default component$(() => {
               }
             ).then((result) => {
               if (result.status == 200) {
-                console.log("Done");
                 nav.path = "/saved";
               } else {
                 nav.path = "/savefailed";
@@ -100,7 +100,6 @@ export default component$(() => {
               }
             ).then((result) => {
               if (result.status == 200) {
-                console.log("Done");
                 nav.path = "/selectiondone";
               } else {
                 nav.path = "/selectionfailed";
