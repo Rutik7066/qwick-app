@@ -24,6 +24,7 @@ export default component$(() => {
       folderid;
     const res = await fetch(url);
     store.data = await res.json();
+    console.log(res);
     console.log(store.data);
   });
 
