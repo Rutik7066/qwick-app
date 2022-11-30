@@ -1,11 +1,7 @@
 import {
   component$,
-  useClientEffect$,
-
   useMount$,
-
-  useStore,
-  useWatch$,
+  useStore
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
@@ -41,7 +37,7 @@ export default component$(() => {
   };
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
-  useWatch$(async () => {
+  useMount$(async () => {
     try {
       const res = await fetch(
         "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
