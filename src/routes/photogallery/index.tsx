@@ -1,4 +1,4 @@
-import { component$, useServerMount$, useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$, useServerMount$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
@@ -21,7 +21,7 @@ export default component$(() => {
   );
   const nav = useNavigate();
 
-  useServerMount$(async () => {
+  useClientEffect$(async () => {
     console.log("Client : ", loc.query.uid, loc.query.folder);
     console.log("Server : ", store.uid, store.folderid);
     const url =
