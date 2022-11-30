@@ -1,4 +1,4 @@
-import { component$, useClientEffect$, useServerMount$, useStore } from "@builder.io/qwik";
+import { component$, useServerMount$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
