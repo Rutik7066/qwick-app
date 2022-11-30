@@ -38,7 +38,6 @@ export default component$(() => {
   };
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
-
   useClientEffect$(async () => {
     try {
       const res = await fetch(
