@@ -24,7 +24,6 @@ export default component$(() => {
       uid +
       "&aws_id=" +
       folderid;
-    
     console.log(url);
     const res = await fetch(url);
     store.data = await res.json();
