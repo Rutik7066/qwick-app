@@ -2,7 +2,10 @@ import {
   component$,
   useClientEffect$,
 
+  useMount$,
+
   useStore,
+  useWatch$,
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
@@ -38,22 +41,22 @@ export default component$(() => {
   };
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
-  useClientEffect$(async () => {
+  useWatch$(async () => {
     try {
       const res = await fetch(
-        "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/getfolder?uid=" +
+        "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
           uid +
           "&aws_id=" +
           folderid
       );
       console.log(store);
       store.data = await res.json();
-      console.log(store.data);
+   
     } catch (error) {
       console.log(error.toString());
     }
   });
-
+   console.log(store.data);
   return (
     <div className="w-auto h-auto">
       <div className="sticky top-0 z-30  px-2 py-4 bg-white justify-center items-center sm:px-4 shadow">
@@ -94,7 +97,7 @@ export default component$(() => {
             console.log(store.data);
 
             await fetch(
-              "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/updatefolder",
+              "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -123,7 +126,7 @@ export default component$(() => {
             store.data.status = 2;
             console.log(store.data);
             await fetch(
-              "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/updatefolder",
+              "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
