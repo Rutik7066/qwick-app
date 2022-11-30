@@ -45,7 +45,7 @@ export default component$(() => {
           "&aws_id=" +
           folderid
       );
-      console.log(store);
+      console.log(uid,folderid);
       store.data = await res.json();
    
     } catch (error) {
