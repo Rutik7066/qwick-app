@@ -41,7 +41,7 @@ export default component$(() => {
   useClientEffect$(async () => {
     try {
       const res = await fetch(
-        "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
+        "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/getfolder?uid=" +
           uid +
           "&aws_id=" +
           folderid
@@ -94,7 +94,7 @@ export default component$(() => {
             console.log(store.data);
 
             await fetch(
-              "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/updatefolder",
+              "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -123,7 +123,7 @@ export default component$(() => {
             store.data.status = 2;
             console.log(store.data);
             await fetch(
-              "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/updatefolder",
+              "https://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
