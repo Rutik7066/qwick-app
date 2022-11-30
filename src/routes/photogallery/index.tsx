@@ -1,4 +1,9 @@
-import { component$, useMount$, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  useClientEffect$,
+  useServerMount$,
+  useStore,
+} from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
@@ -6,7 +11,24 @@ export default component$(() => {
   const uid: string = loc.query.uid;
   const folderid: string = loc.query.folder;
 
-  const data = {
+  interface Images {
+    id: number;
+    JobID: number;
+    key: string;
+    name: string;
+    local_url: string;
+    bucket_url: string;
+    is_selected: boolean;
+  }
+  interface Data {
+    id: number;
+    CustomerID: number;
+    aws_id: string;
+    status: number;
+    length: number;
+    images: Images[];
+  }
+  const data: Data = {
     id: 0,
     CustomerID: 0,
     aws_id: "",
@@ -17,19 +39,20 @@ export default component$(() => {
   const store = useStore({ data: data }, { recursive: true });
   const nav = useNavigate();
 
-  useMount$(async () => {
-    console.log(uid, folderid);
-    const url =
-      "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
-      uid +
-      "&aws_id=" +
-      folderid;
-
-    console.log(url);
-    store.data = await fetch(url)
-      .then(async (data) => await data.json())
-      .catch((error) => console.log(error));
-    console.log(store.data);
+  useClientEffect$(async () => {
+    try {
+      const res = await fetch(
+        "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
+          uid +
+          "&aws_id=" +
+          folderid
+      );
+      console.log(store);
+      store.data = await res.json();
+      console.log(store.data);
+    } catch (error) {
+      console.log(error.toString());
+    }
   });
 
   return (
