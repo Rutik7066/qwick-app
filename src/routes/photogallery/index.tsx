@@ -1,4 +1,4 @@
-import { component$, useClientEffect$,  useStore } from "@builder.io/qwik";
+import { component$,  useServerMount$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
@@ -19,9 +19,8 @@ export default component$(() => {
     },
     { recursive: true }
   );
-  const nav = useNavigate();
 
-  useClientEffect$(async () => {
+  useServerMount$(async () => {
     console.log("Client : ", loc.query.uid, loc.query.folder);
     console.log("Server : ", store.uid, store.folderid);
     const url =
@@ -38,7 +37,7 @@ export default component$(() => {
       })
       .catch((error) => console.log(error));
   });
-
+  const nav = useNavigate();
   return (
     <div className="w-auto h-auto">
       <div className="sticky top-0 z-30  px-2 py-4 bg-white justify-center items-center sm:px-4 shadow">
