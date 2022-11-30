@@ -1,11 +1,8 @@
-import { component$, useServerMount$, useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const loc = useLocation();
-  const uid: string = loc.query.uid;
-  const folderid: string = loc.query.folder;
-
   const data = {
     id: 0,
     CustomerID: 0,
@@ -14,21 +11,32 @@ export default component$(() => {
     length: 0,
     images: [],
   };
-  const store = useStore({ data: data }, { recursive: true });
+  const store = useStore(
+    {
+      data: data,
+      uid: loc.query.uid,
+      folderid: loc.query.folder,
+    },
+    { recursive: true }
+  );
   const nav = useNavigate();
 
-  useServerMount$(async () => {
-    console.log(uid, folderid);
+  useClientEffect$(async () => {
+    console.log("Client : ", loc.query.uid, loc.query.folder);
+    console.log("Server : ", store.uid, store.folderid);
     const url =
       "http://ec2-13-232-60-200.ap-south-1.compute.amazonaws.com:3000/getfolder?uid=" +
-      uid +
+      store.uid +
       "&aws_id=" +
-      folderid;
+      store.folderid;
     console.log(url);
-    const res = await fetch(url);
-    store.data = await res.json();
-    console.log(res);
-    console.log(store.data);
+    fetch(url)
+      .then(async (data) => await data.json())
+      .then(function (data) {
+        console.log(data);
+        store.data = data;
+      })
+      .catch((error) => console.log(error));
   });
 
   return (
