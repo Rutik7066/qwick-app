@@ -40,7 +40,7 @@ export default component$(() => {
   useMount$(async () => {
     try {
       const res = await fetch(
-        "	https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getfolder?uid=" +
+        "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getfolder?uid=" +
           uid +
           "&aws_id=" +
           folderid
@@ -93,7 +93,7 @@ export default component$(() => {
             console.log(store.data);
 
             await fetch(
-              "	https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatefolder",
+              "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
@@ -122,7 +122,7 @@ export default component$(() => {
             store.data.status = 2;
             console.log(store.data);
             await fetch(
-              "	https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatefolder",
+              "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatefolder",
               {
                 method: "POST",
                 body: JSON.stringify(store.data),
