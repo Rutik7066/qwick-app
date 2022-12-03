@@ -4,11 +4,12 @@ export default component$(() => {
   return (
     <>
       <main>
+        {/*GLobal Header  */}
         <section>
           <Slot />
         </section>
       </main>
-      <footer></footer>
+      {/* GLobal Footer */}
     </>
   );
 });
