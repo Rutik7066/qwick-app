@@ -22,6 +22,8 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
+     
+
         {/* Router Head will add meta and other tag automatically provided by Documenthead. */}
         <RouterHead />
         {/* Open Graphy Script Here */}
