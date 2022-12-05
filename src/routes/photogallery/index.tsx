@@ -4,6 +4,7 @@ import {
   useStore
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { PmLogo } from "~/components/icon/PmLogo";
 
 export default component$(() => {
   const loc = useLocation();
@@ -56,8 +57,16 @@ export default component$(() => {
   return (
     <div className="w-auto h-auto">
       <div className="sticky top-0 z-30  px-2 py-4 bg-white justify-center items-center sm:px-4 shadow">
-        <a href="/" className="text-xl font-semibold text-indigo-600 ">
-          Photo Gallery
+        <a
+          href="https://www.photographymanager.in"
+          className=" my-auto bg-white rounded-lg "
+        >
+          <div className="flex flex-row items-center">
+            <PmLogo />
+            <h1 className="text-black text-xl font-bold md:px-2">
+              Photography Manager - PM
+            </h1>
+          </div>
         </a>
       </div>
       <div className="grid lg:grid-cols-4 gap-10 p-5 ">
