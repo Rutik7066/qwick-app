@@ -1,5 +1,4 @@
 import { component$ } from "@builder.io/qwik";
-import { type } from "os";
 
 interface prop {
   name: string;
