@@ -22,11 +22,24 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
-     
 
         {/* Router Head will add meta and other tag automatically provided by Documenthead. */}
         <RouterHead />
-        {/* Open Graphy Script Here */}
+        {/* Open Graphy Started */}
+        <meta property="og:title" content="Photography Manager" />
+        <meta property="og:site_name" content="Photography Manager" />
+        <meta property="og:url" content="https://photographymanager.in/" />
+        <meta
+          property="og:description"
+          content="Best Photo shop billing and management software.
+Create bill, manage events, manage customer remaining payment and share photos for selection using simple link."
+        />
+        <meta property="og:type" content="product" />
+        <meta
+          property="og:image"
+          content="https://photographymanager.in/images/Card.jpg"
+        />
+        {/* Open Graphy Ended */}
       </head>
       <body lang="en">
         <RouterOutlet />

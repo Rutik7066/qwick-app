@@ -4,10 +4,9 @@ export const PmLogo = () => (
     xmlns:xlink="http://www.w3.org/1999/xlink"
     width="40px"
     height="40px"
-    
+    className="mr-3"
   >
     <image
-      
       x="0px"
       y="0px"
       width="40px"
