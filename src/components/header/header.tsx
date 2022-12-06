@@ -21,7 +21,7 @@ export const Header = component$(() => {
     <header className=" sticky min-w-full top-0 bg-white bg-transparent ">
       <div className="flex flex-row justify-between items-center w-full shadow">
         <a
-          href="https://www.photographymanager.in"
+          href="/"
           className="mx-5 my-4 bg-white rounded-lg p-2"
         >
           <div className="flex flex-row items-center">

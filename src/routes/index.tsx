@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { DocumentHead } from "@builder.io/qwik-city";
 import { Feature } from "~/components/features/Feature";
-import { Footer } from "~/components/footer";
+import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
 
 export default component$(() => {
