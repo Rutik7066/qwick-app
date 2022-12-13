@@ -18,12 +18,9 @@ export const nav = [
 ];
 export const Header = component$(() => {
   return (
-    <header className=" sticky min-w-full top-0 bg-white bg-transparent ">
+    <header className="sticky min-w-full top-0 bg-white bg-transparent ">
       <div className="flex flex-row justify-between items-center w-full shadow">
-        <a
-          href="/"
-          className="mx-5 my-4 bg-white rounded-lg p-2"
-        >
+        <a href="/" className="mx-5 my-2 bg-white rounded-lg p-2">
           <div className="flex flex-row items-center">
             <PmLogo />
             <h1 className="text-black text-xl font-bold px-2">

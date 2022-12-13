@@ -1,8 +1,4 @@
-import {
-  component$,
-  useMount$,
-  useStore
-} from "@builder.io/qwik";
+import { component$, useMount$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PmLogo } from "~/components/icon/PmLogo";
 
@@ -46,14 +42,13 @@ export default component$(() => {
           "&aws_id=" +
           folderid
       );
-      console.log(uid,folderid);
+      console.log(uid, folderid);
       store.data = await res.json();
-   
     } catch (error) {
       console.log(error.toString());
     }
   });
-   console.log(store.data);
+  console.log(store.data);
   return (
     <div className="w-auto h-auto">
       <div className="sticky top-0 z-30  px-2 py-4 bg-white justify-center items-center sm:px-4 shadow">
