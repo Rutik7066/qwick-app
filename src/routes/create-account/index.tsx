@@ -52,7 +52,7 @@ export const makePayment = async(store : any)=>{
     alert(response.razorpay_order_id)
     alert(response.razorpay_signature)
     //  Post the details of user and responcse from razorpay to check and create to creaet  and check routes 
-    
+
   },
   
   "prefill": {
