@@ -1,8 +1,75 @@
 import { $, component$, useServerMount$, useStore } from "@builder.io/qwik";
-import { Footer } from "~/components/footer/footer";
-import { Header } from "~/components/header/header";
 import { PmLogo } from "~/components/icon/PmLogo";
 import Input from "~/components/input/Input";
+
+
+export  function loadScript(src) {
+	return new Promise((resolve) => {
+		const script = document.createElement('script')
+		script.src = src
+		script.onload = () => {
+			resolve(true)
+		}
+		script.onerror = () => {
+			resolve(false)
+		}
+		document.body.appendChild(script)
+	})
+}
+
+export interface data {
+  CustomerName: string,
+  CustomerPhone: string,
+  CustomerAltPhone: string,
+  BusinessName: string,
+  BusinessAdd: string,
+  Email: string,
+  Password: string,
+  ConPassword: string,
+  OrderId: string,
+  string : string,
+  message : string,
+}
+
+
+export const makePayment = async(store : any)=>{
+  const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+  if (!res) {
+    alert('Failed to load. Are you online?')
+    return
+  }
+ const reqBody = {
+  "key": "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
+  "amount": "70000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
+  "currency": "INR",
+  "name": "Photography Manager",
+  "description": "New sign up",
+  "image": "https://photographymanager.in/android-chrome-512x512.png",
+  "order_id": store.OrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+  // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+  "handler": function (response) {
+    alert(response.razorpay_payment_id)
+    alert(response.razorpay_order_id)
+    alert(response.razorpay_signature)
+    //  Post the details of user and responcse from razorpay to check and create to creaet  and check routes 
+    
+  },
+  
+  "prefill": {
+      "name": store.CustomerName,
+      "email": store.Email,
+      "contact": store.CustomerPhone
+  },
+  "notes": {
+      "address": "Razorpay Corporate Office"
+  },
+ 
+ } 
+const paymentObj = new window.Razorpay(reqBody)
+
+paymentObj.open()
+
+}
 
 export default component$(() => {
   const store = useStore({
@@ -15,6 +82,7 @@ export default component$(() => {
     Password: "",
     ConPassword: "",
     OrderId: "",
+    message : "",
   });
 
   useServerMount$(() => {
@@ -29,18 +97,55 @@ export default component$(() => {
     })
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
         store.OrderId = data.id;
+        console.log(store.OrderId);
+
       })
       .catch((error) => console.error(error));
   });
+  
+  const createAccount = $(async() => {
+    // Validating   
+    for (const key in store) {
+      if (key === "message"  || key === "OrderId"){
+        continue
+      }
+    
+      console.log(store[key] + " "+ key);
+      if (store[key] === "") {
+        store.message = "Fill all details.";
+        document.getElementById('toast').classList.replace('hidden','flex')
+        setTimeout(()=>{ 
+          document.getElementById('toast').classList.replace('flex','hidden')
+        }, 100000)
+        return
+      }
+    } 
+    if (!(store['Email'].indexOf('@') > -1 && store['Email'].indexOf('.') > -1)){
+      store.message = "Enter valid email.";
+      document.getElementById('toast').classList.replace('hidden','flex')
+      setTimeout(()=>{ 
+        document.getElementById('toast').classList.replace('flex','hidden')
+      }, 100000)
+      return
+    }
+    if (store['Password'] !== store['ConPassword']){
+      store.message = "Password Missmatch";
+      document.getElementById('toast').classList.replace('hidden','flex')
+      setTimeout(()=>{ 
+        document.getElementById('toast').classList.replace('flex','hidden')
+      }, 100000)
+      return
+    }
+    // Validation done. 
+   await  makePayment(store);
+  })
 
-  const createAccount = () => {
-    //
-  };
+
 
   return (
-    <section className=" bg-gray-900 w-full">
+    <div className=" bg-gray-900 w-full">
+
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="/"
@@ -124,7 +229,7 @@ export default component$(() => {
                 <Input
                   name="password"
                   onChange={$(
-                    (v) => (store.Email = (v.target as HTMLInputElement).value)
+                    (v) => (store.Password = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Password"
@@ -132,7 +237,7 @@ export default component$(() => {
                 <Input
                   name="confirmpassword"
                   onChange={$(
-                    (v) => (store.Email = (v.target as HTMLInputElement).value)
+                    (v) => (store.ConPassword  = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Re Enter Password"
@@ -141,7 +246,9 @@ export default component$(() => {
             </div>
           </div>
           <div className="w-full flex justify-end">
-            <button className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
+            <button 
+            onClick$={createAccount}
+            className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
               Pay Now
             </button>
           </div>
@@ -150,8 +257,8 @@ export default component$(() => {
         </div>
       </div>
       <div
-        id="toast-warning"
-        className=" flex absolute  bottom-5 right-5 items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+        id="toast"
+        className="hidden absolute top-5 right-5 items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert"
       >
         <div className="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
@@ -171,31 +278,10 @@ export default component$(() => {
           <span className="sr-only">Warning icon</span>
         </div>
         <div className="ml-3 text-sm font-normal">
-          Improve password difficulty.
+          {store.message}
         </div>
-        <button
-          type="button"
-          onClick$={createAccount}
-          className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-          data-dismiss-target="#toast-warning"
-          aria-label="Close"
-        >
-          <span className="sr-only">Close</span>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
+       
       </div>
-    </section>
+    </div>
   );
 });
