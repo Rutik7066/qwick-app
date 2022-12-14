@@ -3,93 +3,117 @@ import { PmLogo } from "~/components/icon/PmLogo";
 import Input from "~/components/input/Input";
 
 
-export  function loadScript(src) {
-	return new Promise((resolve) => {
-		const script = document.createElement('script')
-		script.src = src
-		script.onload = () => {
-			resolve(true)
-		}
-		script.onerror = () => {
-			resolve(false)
-		}
-		document.body.appendChild(script)
-	})
+export function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = src
+    script.onload = () => {
+      resolve(true)
+    }
+    script.onerror = () => {
+      resolve(false)
+    }
+    document.body.appendChild(script)
+  })
 }
 
 export interface data {
-  CustomerName: string,
-  CustomerPhone: string,
-  CustomerAltPhone: string,
-  BusinessName: string,
-  BusinessAdd: string,
-  Email: string,
-  Password: string,
+  customername: string,
+  customerphone: string,
+  customeraltphone: string,
+  businessname: string,
+  businessaddress: string,
+  customeremail: string,
+  password: string,
   ConPassword: string,
   OrderId: string,
-  string : string,
-  message : string,
+  string: string,
+  message: string,
 }
 
 
-export const makePayment = async(store : any)=>{
+export const makePayment = async (store: any) => {
+
   const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
   if (!res) {
     alert('Failed to load. Are you online?')
     return
   }
- const reqBody = {
-  "key": "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
-  "amount": "70000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
-  "currency": "INR",
-  "name": "Photography Manager",
-  "description": "New sign up",
-  "image": "https://photographymanager.in/android-chrome-512x512.png",
-  "order_id": store.OrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-  // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
-  "handler": function (response) {
-    alert(response.razorpay_payment_id)
-    alert(response.razorpay_order_id)
-    alert(response.razorpay_signature)
-    //  Post the details of user and responcse from razorpay to check and create to creaet  and check routes 
+  const reqBody = {
+    "key": "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
+    "amount": "1000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Photography Manager",
+    "description": "New sign up",
+    "image": "https://photographymanager.in/android-chrome-512x512.png",
+    "order_id": store.OrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+    "handler": function (r) {
+      console.log(r.razorpay_payment_id)
+      console.log(r.razorpay_order_id)
+      console.log(r.razorpay_signature)
+      fetch('https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate', {
+        method: "POST",
+        body: JSON.stringify({
+          razorpay_payment_id: r.razorpay_payment_id,
+          razorpay_order_id: r.razorpay_order_id,
+          razorpay_signature: r.razorpay_signature,
+          customername: store.customername,
+          customerphone: store.customerphone,
+          customeraltphone: store.customeraltphone,
+          businessname: store.businessname,
+          businessaddress: store.businessaddress,
+          customeremail: store.customeremail,
+          password: store.password,
+          planprice: "70000"
+        })
+      }).then((data) => {
 
-  },
-  
-  "prefill": {
+        if (data.status == 400) {
+          window.location.replace('/welcome')
+        } else {
+          console.log("payment failed ");
+
+        }
+      }).catch((error) => console.log(error))
+
+    },
+
+    "prefill": {
       "name": store.CustomerName,
       "email": store.Email,
       "contact": store.CustomerPhone
-  },
-  "notes": {
+    },
+    "notes": {
       "address": "Razorpay Corporate Office"
-  },
- 
- } 
-const paymentObj = new window.Razorpay(reqBody)
+    },
 
-paymentObj.open()
+  }
+  console.log('tets');
 
+  const paymentObj = new window.Razorpay(reqBody)
+  paymentObj.open()
 }
 
 export default component$(() => {
   const store = useStore({
-    CustomerName: "",
-    CustomerPhone: "",
-    CustomerAltPhone: "",
-    BusinessName: "",
-    BusinessAdd: "",
-    Email: "",
-    Password: "",
+    customername: '',
+    customerphone: '',
+    customeraltphone: '',
+    businessname: '',
+    businessaddress: '',
+    customeremail: '',
+    password: '',
     ConPassword: "",
     OrderId: "",
-    message : "",
+    message: "",
   });
 
   useServerMount$(() => {
-    fetch("http://127.0.0.1:3000/createorder", {
+    fetch("https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder", {
       method: "POST",
       body: JSON.stringify({
-        amount: "700",
+        amount: "10",
         notes: {
           purpose: "create acount with one year sub",
         },
@@ -103,42 +127,56 @@ export default component$(() => {
       })
       .catch((error) => console.error(error));
   });
-  
-  const createAccount = $(async() => {
+
+  const createAccount = $(async () => {
     // Validating   
     for (const key in store) {
-      if (key === "message"  || key === "OrderId"){
+      if (key === "message" || key === "OrderId") {
         continue
       }
-    
-      console.log(store[key] + " "+ key);
+
+      console.log(store[key] + " " + key);
       if (store[key] === "") {
         store.message = "Fill all details.";
-        document.getElementById('toast').classList.replace('hidden','flex')
-        setTimeout(()=>{ 
-          document.getElementById('toast').classList.replace('flex','hidden')
-        }, 100000)
+        document.getElementById('toast').classList.replace('hidden', 'flex')
+        setTimeout(() => {
+          document.getElementById('toast').classList.replace('flex', 'hidden')
+        }, 10000)
         return
       }
-    } 
-    if (!(store['Email'].indexOf('@') > -1 && store['Email'].indexOf('.') > -1)){
+    }
+    console.log(1);
+
+    if (!(store['customeremail'].indexOf('@') > -1 && store['customeremail'].indexOf('.') > -1)) {
       store.message = "Enter valid email.";
-      document.getElementById('toast').classList.replace('hidden','flex')
-      setTimeout(()=>{ 
-        document.getElementById('toast').classList.replace('flex','hidden')
-      }, 100000)
+      document.getElementById('toast').classList.replace('hidden', 'flex')
+      setTimeout(() => {
+        document.getElementById('toast').classList.replace('flex', 'hidden')
+      }, 10000)
       return
     }
-    if (store['Password'] !== store['ConPassword']){
+    console.log(2);
+
+    if (store['password'] !== store['ConPassword']) {
       store.message = "Password Missmatch";
-      document.getElementById('toast').classList.replace('hidden','flex')
-      setTimeout(()=>{ 
-        document.getElementById('toast').classList.replace('flex','hidden')
-      }, 100000)
+      document.getElementById('toast').classList.replace('hidden', 'flex')
+      setTimeout(() => {
+        document.getElementById('toast').classList.replace('flex', 'hidden')
+      }, 10000)
       return
     }
+    console.log(3);
+
     // Validation done. 
-   await  makePayment(store);
+    try {
+      console.log(4);
+
+      await makePayment(store);
+      console.log(5);
+
+    } catch (error) {
+      console.log(error)
+    }
   })
 
 
@@ -167,9 +205,9 @@ export default component$(() => {
                   name="customername"
                   onChange={$(
                     (v) =>
-                      (store.CustomerName = (
-                        v.target as HTMLInputElement
-                      ).value)
+                    (store.customername = (
+                      v.target as HTMLInputElement
+                    ).value)
                   )}
                   type="text"
                   placeholder="Customer Name"
@@ -178,9 +216,9 @@ export default component$(() => {
                   name="customerphone"
                   onChange={$(
                     (v) =>
-                      (store.CustomerPhone = (
-                        v.target as HTMLInputElement
-                      ).value)
+                    (store.customerphone = (
+                      v.target as HTMLInputElement
+                    ).value)
                   )}
                   type="text"
                   placeholder="Customer Phone"
@@ -189,9 +227,9 @@ export default component$(() => {
                   name="customeraltphone"
                   onChange={$(
                     (v) =>
-                      (store.CustomerAltPhone = (
-                        v.target as HTMLInputElement
-                      ).value)
+                    (store.customeraltphone = (
+                      v.target as HTMLInputElement
+                    ).value)
                   )}
                   type="text"
                   placeholder="Customer Alt Phone"
@@ -200,9 +238,9 @@ export default component$(() => {
                   name="businessname"
                   onChange={$(
                     (v) =>
-                      (store.BusinessName = (
-                        v.target as HTMLInputElement
-                      ).value)
+                    (store.businessname = (
+                      v.target as HTMLInputElement
+                    ).value)
                   )}
                   type="text"
                   placeholder="Business Name"
@@ -211,7 +249,7 @@ export default component$(() => {
                   name="businessadd"
                   onChange={$(
                     (v) =>
-                      (store.BusinessAdd = (v.target as HTMLInputElement).value)
+                      (store.businessaddress = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Business Address"
@@ -221,7 +259,7 @@ export default component$(() => {
                 <Input
                   name="email"
                   onChange={$(
-                    (v) => (store.Email = (v.target as HTMLInputElement).value)
+                    (v) => (store.customeremail = (v.target as HTMLInputElement).value)
                   )}
                   type="email"
                   placeholder="email@gmail.com"
@@ -229,7 +267,7 @@ export default component$(() => {
                 <Input
                   name="password"
                   onChange={$(
-                    (v) => (store.Password = (v.target as HTMLInputElement).value)
+                    (v) => (store.password = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Password"
@@ -237,7 +275,7 @@ export default component$(() => {
                 <Input
                   name="confirmpassword"
                   onChange={$(
-                    (v) => (store.ConPassword  = (v.target as HTMLInputElement).value)
+                    (v) => (store.ConPassword = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Re Enter Password"
@@ -246,9 +284,9 @@ export default component$(() => {
             </div>
           </div>
           <div className="w-full flex justify-end">
-            <button 
-            onClick$={createAccount}
-            className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
+            <button
+              onClick$={createAccount}
+              className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
               Pay Now
             </button>
           </div>
@@ -280,7 +318,7 @@ export default component$(() => {
         <div className="ml-3 text-sm font-normal">
           {store.message}
         </div>
-       
+
       </div>
     </div>
   );

@@ -14,7 +14,7 @@
     "incremental": true,
     "isolatedModules": true,
     "outDir": "tmp",
-    "noEmit": true,
+    "noEmit": false,
     "types": ["node", "vite/client"],
     "paths": {
       "~/*": ["./src/*"]
