@@ -1,5 +1,5 @@
 import { component$, useServerMount$, useStore } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
 export interface data {
