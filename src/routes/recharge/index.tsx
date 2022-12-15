@@ -91,6 +91,7 @@ export default component$(() => {
               "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
               {
                 method: "POST",
+                mode: "no-cors",
                 body: JSON.stringify({
                   amount: (plandata.data.selectedplan.price * 100).toString(),
                   notes: {
@@ -99,7 +100,11 @@ export default component$(() => {
                       plandata.data.selectedplan.price.toString(),
                   },
                 }),
+
                 headers: {
+                  "Access-Control-Allow-Origin":
+                    "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
+
                   "Content-type": "application/json; charset=UTF-8",
                 },
               }
@@ -128,6 +133,7 @@ export default component$(() => {
                   "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatecredit",
                   {
                     method: "POST",
+                    mode: "no-cors",
                     body: JSON.stringify({
                       razorpay_payment_id: r.razorpay_payment_id,
                       razorpay_order_id: r.razorpay_order_id,
@@ -136,6 +142,8 @@ export default component$(() => {
                       planname: plandata.data.selectedplan.name,
                     }),
                     headers: {
+                      "Access-Control-Allow-Origin":
+                        "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatecredit",
                       "Content-type": "application/json; charset=UTF-8",
                     },
                   }

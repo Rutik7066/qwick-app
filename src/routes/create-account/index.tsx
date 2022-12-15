@@ -53,6 +53,7 @@ export const makePayment = async (store: any) => {
         "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate",
         {
           method: "POST",
+          mode: "no-cors",
           body: JSON.stringify({
             razorpay_payment_id: r.razorpay_payment_id,
             razorpay_order_id: r.razorpay_order_id,
@@ -67,6 +68,8 @@ export const makePayment = async (store: any) => {
             planprice: "70000",
           }),
           headers: {
+            "Access-Control-Allow-Origin":
+              "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate",
             "Content-type": "application/json; charset=UTF-8",
           },
         }
