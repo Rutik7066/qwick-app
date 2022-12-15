@@ -1,4 +1,4 @@
-import { component$, useServerMount$, useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$, useServerMount$, useStore } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
@@ -29,7 +29,7 @@ export default component$(() => {
     }
   );
 
-  useServerMount$(async () => {
+  useClientEffect$(async () => {
     const jsonData = await fetch(
       "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getplan",
       {
