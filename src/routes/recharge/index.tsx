@@ -1,4 +1,4 @@
-import { component$, useClientEffect$, useServerMount$, useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$,  useStore } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
