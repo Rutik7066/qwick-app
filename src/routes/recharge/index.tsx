@@ -33,12 +33,13 @@ export default component$(() => {
   const Email: string = loc.query.email;
   const CustomerPhone: string = loc.query.phone;
   const Uid: string = loc.query.uid;
+
   useServerMount$(async () => {
     const jsonData = await fetch(
       "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getplan",
       {
         headers: {
-         "Content-type": "application/json", //
+          "Content-type": "application/json", //
         },
       }
     );
@@ -47,6 +48,10 @@ export default component$(() => {
     plandata.data.selectedplan = plandata.data.plan[0];
     console.log(plandata.data);
   });
+  console.log(loc.params);
+  console.log(loc.href);
+  console.log(loc.pathname);
+  console.log(loc.query);
 
   return (
     <div className="flex flex-col justify-between items-center min-w-full min-h-screen">
@@ -104,7 +109,7 @@ export default component$(() => {
 
                 headers: {
                   "Access-Control-Allow-Origin": "*",
-                 "Content-type": "application/json", //
+                  "Content-type": "application/json", //
                 },
               }
             )
@@ -151,7 +156,7 @@ export default component$(() => {
                     }),
                     headers: {
                       "Access-Control-Allow-Origin": "*",
-                     "Content-type": "application/json", //
+                      "Content-type": "application/json", //
                     },
                   }
                 )
