@@ -68,8 +68,8 @@ export const makePayment = async (store: any) => {
             planprice: "70000",
           }),
           headers: {
-                       "Access-Control-Allow-Origin": "*",
-            "Content-type": "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*",
+            "Content-type": "application/json", //
           },
         }
       )
@@ -124,7 +124,7 @@ export default component$(() => {
           },
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
+          "Content-type": "application/json", //
         },
       }
     )

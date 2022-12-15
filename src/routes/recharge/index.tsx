@@ -38,7 +38,7 @@ export default component$(() => {
       "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getplan",
       {
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
+         "Content-type": "application/json", //
         },
       }
     );
@@ -104,7 +104,7 @@ export default component$(() => {
 
                 headers: {
                   "Access-Control-Allow-Origin": "*",
-                  "Content-type": "application/json; charset=UTF-8",
+                 "Content-type": "application/json", //
                 },
               }
             )
@@ -151,7 +151,7 @@ export default component$(() => {
                     }),
                     headers: {
                       "Access-Control-Allow-Origin": "*",
-                      "Content-type": "application/json; charset=UTF-8",
+                     "Content-type": "application/json", //
                     },
                   }
                 )
