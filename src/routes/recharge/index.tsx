@@ -99,7 +99,7 @@ export default component$(() => {
                 method: "POST",
                 mode: "cors",
                 body: JSON.stringify({
-                  amount: plandata.data.selectedplan.price ,
+                  amount: plandata.data.selectedplan.price.toString(),
                   notes: {
                     purpose:
                       "Recharge of " +
