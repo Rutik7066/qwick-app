@@ -87,8 +87,8 @@ export default component$(() => {
               alert("Failed to load. Are you online?");
               return;
             }
-            let orderid = "";
-            fetch(
+
+            const data = await fetch(
               "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
               {
                 method: "POST",
@@ -109,13 +109,10 @@ export default component$(() => {
                   "Content-type": "application/json; charset=UTF-8",
                 },
               }
-            )
-              .then((data) => data.json())
-              .then((data) => {
-                orderid = data.id;
-                console.log(orderid);
-              })
-              .catch((error) => console.error(error));
+            );
+            const d = await data.json();
+            console.log(data);
+            const orderid = d.id;
             console.log("name " + CustomerName);
             console.log("number " + CustomerName);
             console.log("email " + Email);
