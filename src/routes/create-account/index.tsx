@@ -38,7 +38,7 @@ export const makePayment = async (store: any) => {
   }
   const reqBody = {
     key: "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
-    amount: "1000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
+    amount: "70000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
     currency: "INR",
     name: "Photography Manager",
     description: "New sign up",
@@ -118,7 +118,7 @@ export default component$(() => {
       {
         method: "POST",
         body: JSON.stringify({
-          amount: "10",
+          amount: "700",
           notes: {
             purpose: "create account with one year sub",
           },
