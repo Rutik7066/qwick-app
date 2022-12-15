@@ -79,7 +79,7 @@ export default component$(() => {
             console.log(
               "amount " + (plandata.data.selectedplan.price * 100).toString()
             );
-
+            console.log(1);
             const res = await loadScript(
               "https://checkout.razorpay.com/v1/checkout.js"
             );
@@ -87,7 +87,7 @@ export default component$(() => {
               alert("Failed to load. Are you online?");
               return;
             }
-
+            console.log(2);
             const data = await fetch(
               "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
               {
@@ -105,20 +105,25 @@ export default component$(() => {
                 headers: {
                   "Access-Control-Allow-Origin":
                     "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
-
                   "Content-type": "application/json; charset=UTF-8",
                 },
               }
-            );
-            const d = await data.json();
+            )
+              .then(async (data) => {
+                console.log(data.status);
+                console.log(data);
+
+                return data.json();
+              })
+              .catch((err) => console.log(err));
+
             console.log(data);
-            const orderid = d.id;
+            const orderid = data.id;
             console.log("name " + CustomerName);
             console.log("number " + CustomerName);
             console.log("email " + Email);
             console.log("uid " + Uid);
             console.log("order_id " + orderid);
-
             const reqBody = {
               key: "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
               amount: (plandata.data.selectedplan.price * 100).toString(), // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
