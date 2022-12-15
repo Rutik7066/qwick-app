@@ -2,188 +2,195 @@ import { $, component$, useServerMount$, useStore } from "@builder.io/qwik";
 import { PmLogo } from "~/components/icon/PmLogo";
 import Input from "~/components/input/Input";
 
-
 export function loadScript(src) {
   return new Promise((resolve) => {
-    const script = document.createElement('script')
-    script.src = src
+    const script = document.createElement("script");
+    script.src = src;
     script.onload = () => {
-      resolve(true)
-    }
+      resolve(true);
+    };
     script.onerror = () => {
-      resolve(false)
-    }
-    document.body.appendChild(script)
-  })
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
 }
 
 export interface data {
-  customername: string,
-  customerphone: string,
-  customeraltphone: string,
-  businessname: string,
-  businessaddress: string,
-  customeremail: string,
-  password: string,
-  ConPassword: string,
-  OrderId: string,
-  string: string,
-  message: string,
+  customername: string;
+  customerphone: string;
+  customeraltphone: string;
+  businessname: string;
+  businessaddress: string;
+  customeremail: string;
+  password: string;
+  ConPassword: string;
+  OrderId: string;
+  string: string;
+  message: string;
 }
-
 
 export const makePayment = async (store: any) => {
-
-  const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
   if (!res) {
-    alert('Failed to load. Are you online?')
-    return
+    alert("Failed to load. Are you online?");
+    return;
   }
   const reqBody = {
-    "key": "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
-    "amount": "1000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Photography Manager",
-    "description": "New sign up",
-    "image": "https://photographymanager.in/android-chrome-512x512.png",
-    "order_id": store.OrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    key: "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
+    amount: "1000", // Amount is in currency subunits. Default currency is INR. Hence, 100000 refers to 50000 paise
+    currency: "INR",
+    name: "Photography Manager",
+    description: "New sign up",
+    image: "https://photographymanager.in/android-chrome-512x512.png",
+    order_id: store.OrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
-    "handler": function (r) {
-      console.log(r.razorpay_payment_id)
-      console.log(r.razorpay_order_id)
-      console.log(r.razorpay_signature)
-      fetch('https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate', {
-        method: "POST",
-        body: JSON.stringify({
-          razorpay_payment_id: r.razorpay_payment_id,
-          razorpay_order_id: r.razorpay_order_id,
-          razorpay_signature: r.razorpay_signature,
-          customername: store.customername,
-          customerphone: store.customerphone,
-          customeraltphone: store.customeraltphone,
-          businessname: store.businessname,
-          businessaddress: store.businessaddress,
-          customeremail: store.customeremail,
-          password: store.password,
-          planprice: "70000"
-        })
-      }).then((data) => {
-
-        if (data.status == 400) {
-          window.location.replace('/welcome')
-        } else {
-          console.log("payment failed ");
-
+    handler: function (r) {
+      console.log(r.razorpay_payment_id);
+      console.log(r.razorpay_order_id);
+      console.log(r.razorpay_signature);
+      fetch(
+        "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            razorpay_payment_id: r.razorpay_payment_id,
+            razorpay_order_id: r.razorpay_order_id,
+            razorpay_signature: r.razorpay_signature,
+            customername: store.customername,
+            customerphone: store.customerphone,
+            customeraltphone: store.customeraltphone,
+            businessname: store.businessname,
+            businessaddress: store.businessaddress,
+            customeremail: store.customeremail,
+            password: store.password,
+            planprice: "70000",
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
-      }).catch((error) => console.log(error))
-
+      )
+        .then((data) => {
+          if (data.status == 400) {
+            window.location.replace("/welcome");
+          } else {
+            console.log("payment failed ");
+          }
+        })
+        .catch((error) => console.log(error));
     },
 
-    "prefill": {
-      "name": store.CustomerName,
-      "email": store.Email,
-      "contact": store.CustomerPhone
+    prefill: {
+      name: store.CustomerName,
+      email: store.Email,
+      contact: store.CustomerPhone,
     },
-    "notes": {
-      "address": "Razorpay Corporate Office"
+    notes: {
+      address: "Razorpay Corporate Office",
     },
+  };
+  console.log("tets");
 
-  }
-  console.log('tets');
-
-  const paymentObj = new window.Razorpay(reqBody)
-  paymentObj.open()
-}
+  const paymentObj = new window.Razorpay(reqBody);
+  paymentObj.open();
+};
 
 export default component$(() => {
   const store = useStore({
-    customername: '',
-    customerphone: '',
-    customeraltphone: '',
-    businessname: '',
-    businessaddress: '',
-    customeremail: '',
-    password: '',
+    customername: "",
+    customerphone: "",
+    customeraltphone: "",
+    businessname: "",
+    businessaddress: "",
+    customeremail: "",
+    password: "",
     ConPassword: "",
     OrderId: "",
     message: "",
   });
 
   useServerMount$(() => {
-    fetch("https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder", {
-      method: "POST",
-      body: JSON.stringify({
-        amount: "10",
-        notes: {
-          purpose: "create acount with one year sub",
+    fetch(
+      "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          amount: "10",
+          notes: {
+            purpose: "create acount with one year sub",
+          },
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
         },
-      }),
-    })
+      }
+    )
       .then((data) => data.json())
       .then((data) => {
         store.OrderId = data.id;
         console.log(store.OrderId);
-
       })
       .catch((error) => console.error(error));
   });
 
   const createAccount = $(async () => {
-    // Validating   
+    // Validating
     for (const key in store) {
       if (key === "message" || key === "OrderId") {
-        continue
+        continue;
       }
 
       console.log(store[key] + " " + key);
       if (store[key] === "") {
         store.message = "Fill all details.";
-        document.getElementById('toast').classList.replace('hidden', 'flex')
+        document.getElementById("toast").classList.replace("hidden", "flex");
         setTimeout(() => {
-          document.getElementById('toast').classList.replace('flex', 'hidden')
-        }, 10000)
-        return
+          document.getElementById("toast").classList.replace("flex", "hidden");
+        }, 10000);
+        return;
       }
     }
     console.log(1);
 
-    if (!(store['customeremail'].indexOf('@') > -1 && store['customeremail'].indexOf('.') > -1)) {
+    if (
+      !(
+        store["customeremail"].indexOf("@") > -1 &&
+        store["customeremail"].indexOf(".") > -1
+      )
+    ) {
       store.message = "Enter valid email.";
-      document.getElementById('toast').classList.replace('hidden', 'flex')
+      document.getElementById("toast").classList.replace("hidden", "flex");
       setTimeout(() => {
-        document.getElementById('toast').classList.replace('flex', 'hidden')
-      }, 10000)
-      return
+        document.getElementById("toast").classList.replace("flex", "hidden");
+      }, 10000);
+      return;
     }
     console.log(2);
 
-    if (store['password'] !== store['ConPassword']) {
+    if (store["password"] !== store["ConPassword"]) {
       store.message = "Password Missmatch";
-      document.getElementById('toast').classList.replace('hidden', 'flex')
+      document.getElementById("toast").classList.replace("hidden", "flex");
       setTimeout(() => {
-        document.getElementById('toast').classList.replace('flex', 'hidden')
-      }, 10000)
-      return
+        document.getElementById("toast").classList.replace("flex", "hidden");
+      }, 10000);
+      return;
     }
     console.log(3);
 
-    // Validation done. 
+    // Validation done.
     try {
       console.log(4);
 
       await makePayment(store);
       console.log(5);
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  })
-
-
+  });
 
   return (
     <div className=" bg-gray-900 w-full">
-
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="/"
@@ -205,9 +212,9 @@ export default component$(() => {
                   name="customername"
                   onChange={$(
                     (v) =>
-                    (store.customername = (
-                      v.target as HTMLInputElement
-                    ).value)
+                      (store.customername = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="text"
                   placeholder="Customer Name"
@@ -216,9 +223,9 @@ export default component$(() => {
                   name="customerphone"
                   onChange={$(
                     (v) =>
-                    (store.customerphone = (
-                      v.target as HTMLInputElement
-                    ).value)
+                      (store.customerphone = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="text"
                   placeholder="Customer Phone"
@@ -227,9 +234,9 @@ export default component$(() => {
                   name="customeraltphone"
                   onChange={$(
                     (v) =>
-                    (store.customeraltphone = (
-                      v.target as HTMLInputElement
-                    ).value)
+                      (store.customeraltphone = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="text"
                   placeholder="Customer Alt Phone"
@@ -238,9 +245,9 @@ export default component$(() => {
                   name="businessname"
                   onChange={$(
                     (v) =>
-                    (store.businessname = (
-                      v.target as HTMLInputElement
-                    ).value)
+                      (store.businessname = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="text"
                   placeholder="Business Name"
@@ -249,7 +256,9 @@ export default component$(() => {
                   name="businessadd"
                   onChange={$(
                     (v) =>
-                      (store.businessaddress = (v.target as HTMLInputElement).value)
+                      (store.businessaddress = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="text"
                   placeholder="Business Address"
@@ -259,7 +268,10 @@ export default component$(() => {
                 <Input
                   name="email"
                   onChange={$(
-                    (v) => (store.customeremail = (v.target as HTMLInputElement).value)
+                    (v) =>
+                      (store.customeremail = (
+                        v.target as HTMLInputElement
+                      ).value)
                   )}
                   type="email"
                   placeholder="email@gmail.com"
@@ -267,7 +279,8 @@ export default component$(() => {
                 <Input
                   name="password"
                   onChange={$(
-                    (v) => (store.password = (v.target as HTMLInputElement).value)
+                    (v) =>
+                      (store.password = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Password"
@@ -275,7 +288,8 @@ export default component$(() => {
                 <Input
                   name="confirmpassword"
                   onChange={$(
-                    (v) => (store.ConPassword = (v.target as HTMLInputElement).value)
+                    (v) =>
+                      (store.ConPassword = (v.target as HTMLInputElement).value)
                   )}
                   type="text"
                   placeholder="Re Enter Password"
@@ -286,7 +300,8 @@ export default component$(() => {
           <div className="w-full flex justify-end">
             <button
               onClick$={createAccount}
-              className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
+              className=" my-3 mx-auto text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+            >
               Pay Now
             </button>
           </div>
@@ -315,10 +330,7 @@ export default component$(() => {
           </svg>
           <span className="sr-only">Warning icon</span>
         </div>
-        <div className="ml-3 text-sm font-normal">
-          {store.message}
-        </div>
-
+        <div className="ml-3 text-sm font-normal">{store.message}</div>
       </div>
     </div>
   );
