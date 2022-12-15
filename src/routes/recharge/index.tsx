@@ -29,16 +29,20 @@ export default component$(() => {
     }
   );
   const loc = useLocation();
-  const CustomerName: string = loc.query.name;
-  const Email: string = loc.query.email;
-  const CustomerPhone: string = loc.query.phone;
-  const Uid: string = loc.query.uid;
+  let CustomerName: string = "";
+  let Email: string = "";
+  let CustomerPhone: string = "";
+  let Uid: string = "";
   useServerMount$(async () => {
+    CustomerName = loc.query.name;
+    Email = loc.query.email;
+    CustomerPhone = loc.query.phone;
+    Uid = loc.query.uid;
     const jsonData = await fetch(
       "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/getplan",
       {
         headers: {
-         "Content-type": "application/json", //
+          "Content-type": "application/json", //
         },
       }
     );
@@ -104,7 +108,7 @@ export default component$(() => {
 
                 headers: {
                   "Access-Control-Allow-Origin": "*",
-                 "Content-type": "application/json", //
+                  "Content-type": "application/json", //
                 },
               }
             )
@@ -151,7 +155,7 @@ export default component$(() => {
                     }),
                     headers: {
                       "Access-Control-Allow-Origin": "*",
-                     "Content-type": "application/json", //
+                      "Content-type": "application/json", //
                     },
                   }
                 )
