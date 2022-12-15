@@ -12,6 +12,11 @@ export interface plan {
   validity: string;
 }
 export default component$(() => {
+  const loc = useLocation();
+  const CustomerName: string = loc.query.name;
+  const Email: string = loc.query.email;
+  const CustomerPhone: string = loc.query.phone;
+  const Uid: string = loc.query.uid;
   const plandata = useStore(
     {
       data: {
@@ -43,11 +48,7 @@ export default component$(() => {
     plandata.data.selectedplan = plandata.data.plan[0];
     console.log(plandata.data);
   });
-  const loc = useLocation();
-  const CustomerName: string = loc.query.name;
-  const Email: string = loc.query.email;
-  const CustomerPhone: string = loc.query.phone;
-  const Uid: string = loc.query.uid;
+
   console.log(loc.params);
   console.log(loc.href);
   console.log(loc.pathname);
