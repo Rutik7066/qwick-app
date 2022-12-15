@@ -12,11 +12,7 @@ export interface plan {
   validity: string;
 }
 export default component$(() => {
-  const loc = useLocation();
-  const name: string = loc.query.name;
-  const email: string = loc.query.email;
-  const phone: string = loc.query.phone;
-  const uid: string = loc.query.uid;
+
   const plandata = useStore(
     {
       data: {
@@ -49,10 +45,7 @@ export default component$(() => {
     console.log(plandata.data);
   });
 
-  console.log(loc.params);
-  console.log(loc.href);
-  console.log(loc.pathname);
-  console.log(loc.query);
+ 
 
   return (
     <div className="flex flex-col justify-between items-center min-w-full min-h-screen">
@@ -82,6 +75,24 @@ export default component$(() => {
         })}
         <button
           onClick$={async () => {
+            // Get the URL of the current page
+            const url = new URL(window.location.href);
+
+            // Create a new URLSearchParams object to get the query parameters
+            const searchParams = new URLSearchParams(url.search);
+
+            // Get the values of the query parameters
+            const name = searchParams.get("name");
+            const email = searchParams.get("email");
+            const phone = searchParams.get("phone");
+            const uid = searchParams.get("uid");
+
+            // Log the values to the console
+            console.log(name);
+            console.log(email);
+            console.log(phone);
+            console.log(uid);
+
             console.log(
               "amount " + (plandata.data.selectedplan.price * 100).toString()
             );
