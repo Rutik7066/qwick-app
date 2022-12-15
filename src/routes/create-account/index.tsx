@@ -1,4 +1,4 @@
-import { $, component$, useClientEffect$, useStore } from "@builder.io/qwik";
+import { $, component$, useServerMount$, useStore } from "@builder.io/qwik";
 import { PmLogo } from "~/components/icon/PmLogo";
 import Input from "~/components/input/Input";
 
@@ -112,7 +112,7 @@ export default component$(() => {
     message: "",
   });
 
-  useClientEffect$(() => {
+  useServerMount$(() => {
     fetch(
       "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
       {
