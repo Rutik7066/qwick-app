@@ -87,11 +87,7 @@ export default component$(() => {
             const phone = searchParams.get("phone");
             const uid = searchParams.get("uid");
 
-            // Log the values to the console
-            console.log(name);
-            console.log(email);
-            console.log(phone);
-            console.log(uid);
+         
 
             console.log(
               "amount " + (plandata.data.selectedplan.price * 100).toString()
@@ -138,7 +134,7 @@ export default component$(() => {
             console.log("name " + name);
             console.log("number " + name);
             console.log("email " + email);
-            console.log("email " + loc.query.name);
+           
             console.log("uid " + uid);
             console.log("order_id " + orderid);
             const reqBody = {
