@@ -103,8 +103,7 @@ export default component$(() => {
                 }),
 
                 headers: {
-                  "Access-Control-Allow-Origin":
-                    "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
+                  "Access-Control-Allow-Origin": "*",
                   "Content-type": "application/json; charset=UTF-8",
                 },
               }
@@ -151,8 +150,7 @@ export default component$(() => {
                       planname: plandata.data.selectedplan.name,
                     }),
                     headers: {
-                      "Access-Control-Allow-Origin":
-                        "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatecredit",
+                      "Access-Control-Allow-Origin": "*",
                       "Content-type": "application/json; charset=UTF-8",
                     },
                   }

@@ -68,8 +68,7 @@ export const makePayment = async (store: any) => {
             planprice: "70000",
           }),
           headers: {
-            "Access-Control-Allow-Origin":
-              "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/confirmandcreate",
+                       "Access-Control-Allow-Origin": "*",
             "Content-type": "application/json; charset=UTF-8",
           },
         }
@@ -121,7 +120,7 @@ export default component$(() => {
         body: JSON.stringify({
           amount: "10",
           notes: {
-            purpose: "create acount with one year sub",
+            purpose: "create account with one year sub",
           },
         }),
         headers: {
