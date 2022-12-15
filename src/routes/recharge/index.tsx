@@ -28,11 +28,6 @@ export default component$(() => {
       recursive: true,
     }
   );
-  const loc = useLocation();
-  const CustomerName: string = loc.query.name;
-  const Email: string = loc.query.email;
-  const CustomerPhone: string = loc.query.phone;
-  const Uid: string = loc.query.uid;
 
   useServerMount$(async () => {
     const jsonData = await fetch(
@@ -48,6 +43,11 @@ export default component$(() => {
     plandata.data.selectedplan = plandata.data.plan[0];
     console.log(plandata.data);
   });
+  const loc = useLocation();
+  const CustomerName: string = loc.query.name;
+  const Email: string = loc.query.email;
+  const CustomerPhone: string = loc.query.phone;
+  const Uid: string = loc.query.uid;
   console.log(loc.params);
   console.log(loc.href);
   console.log(loc.pathname);
@@ -99,7 +99,7 @@ export default component$(() => {
                 method: "POST",
                 mode: "cors",
                 body: JSON.stringify({
-                  amount: (plandata.data.selectedplan.price * 100).toString(),
+                  amount: plandata.data.selectedplan.price ,
                   notes: {
                     purpose:
                       "Recharge of " +
