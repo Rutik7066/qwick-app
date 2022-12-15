@@ -92,7 +92,7 @@ export default component$(() => {
               "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/createorder",
               {
                 method: "POST",
-                mode: "no-cors",
+                mode: "cors",
                 body: JSON.stringify({
                   amount: (plandata.data.selectedplan.price * 100).toString(),
                   notes: {
@@ -141,7 +141,7 @@ export default component$(() => {
                   "https://nxhpt4pbmb.execute-api.ap-south-1.amazonaws.com/updatecredit",
                   {
                     method: "POST",
-                    mode: "no-cors",
+                    mode: "cors",
                     body: JSON.stringify({
                       razorpay_payment_id: r.razorpay_payment_id,
                       razorpay_order_id: r.razorpay_order_id,
