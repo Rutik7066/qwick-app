@@ -13,10 +13,10 @@ export interface plan {
 }
 export default component$(() => {
   const loc = useLocation();
-  const CustomerName: string = loc.query.name;
-  const Email: string = loc.query.email;
-  const CustomerPhone: string = loc.query.phone;
-  const Uid: string = loc.query.uid;
+  const name: string = loc.query.name;
+  const email: string = loc.query.email;
+  const phone: string = loc.query.phone;
+  const uid: string = loc.query.uid;
   const plandata = useStore(
     {
       data: {
@@ -124,10 +124,11 @@ export default component$(() => {
 
             console.log(data);
             const orderid = data.id;
-            console.log("name " + CustomerName);
-            console.log("number " + CustomerName);
-            console.log("email " + Email);
-            console.log("uid " + Uid);
+            console.log("name " + name);
+            console.log("number " + name);
+            console.log("email " + email);
+            console.log("email " + loc.query.name);
+            console.log("uid " + uid);
             console.log("order_id " + orderid);
             const reqBody = {
               key: "rzp_live_ke2XNPaoJ3IbuK", // Enter the Key ID generated from the Dashboard
@@ -152,7 +153,7 @@ export default component$(() => {
                       razorpay_payment_id: r.razorpay_payment_id,
                       razorpay_order_id: r.razorpay_order_id,
                       razorpay_signature: r.razorpay_signature,
-                      uid: Uid,
+                      uid: uid,
                       planname: plandata.data.selectedplan.name,
                     }),
                     headers: {
@@ -171,9 +172,9 @@ export default component$(() => {
                   .catch((error) => console.log(error));
               },
               prefill: {
-                name: CustomerName,
-                email: Email,
-                contact: CustomerPhone,
+                name: name,
+                email: email,
+                contact: phone,
               },
               notes: {
                 address: "Razorpay Corporate Office",
