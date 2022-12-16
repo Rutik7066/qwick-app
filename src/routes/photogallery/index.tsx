@@ -67,17 +67,52 @@ export default component$(() => {
       <div className="grid lg:grid-cols-4 gap-10 p-5 ">
         {store.data.images.map((image) => (
           <button onClick$={() => (image.is_selected = !image.is_selected)}>
-            <img
-              src={image.bucket_url}
-              className="pointer-events-none hover:shadow-2xl rounded-xl"
-            />
+            <div className="relative">
+              <div className="grid gap-5  grid-cols-3  grid-rows-3 opacity-20 absolute z-50 bottom-0 left-0 top-0 right-0  overflow-hidden">
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+                <h1 className="text-[12px] font-medium -rotate-45 ">
+                  Photography Manager
+                </h1>{" "}
+              </div>
+              <h1 className="absolute z-20 text-sm font-extrabold opacity-50 text-red-700  bottom-5 right-3">
+                Image is only for selection
+              </h1>
+              <img
+                src={image.bucket_url}
+                className="pointer-events-none hover:shadow-2xl rounded-xl"
+              />
+            </div>
+
             <div className="flex flex-row justify-between items-center">
               <h6 className="text-base py-2 ">{image.name}</h6>
               {image.is_selected ? (
                 <img
                   className="w-5 m-3 "
                   src="https://www.kindpng.com/picc/m/697-6979063_instagram-like-icon-png-clipart-png-download-love.png"
-                  alt=""
+                  alt="Photography Manager"
                 />
               ) : (
                 <img
