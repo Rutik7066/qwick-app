@@ -1,69 +1,63 @@
 import { component$ } from "@builder.io/qwik";
 import { DocumentHead } from "@builder.io/qwik-city";
-import { Feature } from "~/components/features/Feature";
+
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
 
 export default component$(() => {
   return (
-    <div className="flex flex-col min-w-full justify-start items-center">
+    <div className="flex flex-col min-w-full justify-around items-center">
       <Header />
-      <div className="flex flex-col-reverse md:flex-row justify-around items-center w-full">
-        <img
-          src="/images/Customer Name.png"
-          className=" w-3/4 md:w-1/3 my-10  mx-5 rounded shadow-purple-500 shadow-2xl"
-        />
-        <div className="flex flex-col justify-center items-start">
-          <h1 className=" text-xl  font-bold  md:text-3xl md:font-extrabold ">
-            Grow 🚀 your photography bussiness with{" "}
-            <u className="text-purple-700"> PM </u>
-          </h1>
-          <h2 className="text-lg font-bold py-2">
-            Best Photo shop billing and management software. <br />
-            Create jpeg/png bills, manage event, <br /> manage customer
-            credit/khata, share wedding photos for
-            <br /> selection and much more. Everything in one Software 💪
-          </h2>
-          <div className="flex items-end justify-end">
-            <h1 className="text-4xl font-extrabold text-indigo-800">
+
+      <img
+        src="/images/Customer Name.png"
+        className=" w-3/4 md:w-1/3 my-4  mx-5 rounded shadow-purple-500 shadow-2xl"
+      />
+
+      <div className="flex flex-col justify-center items-center  my-14 mx-auto">
+        <h1 className="text-base font-bold md:text-4xl md:font-extrabold  ">
+          Grow 🚀 your photography bussiness
+        </h1>
+        <p className="text-xs text-center font-bold md:text-lg md:font-bold text-gray-600 mx-5 md:w-1/2 my-3">
+          Best Photo shop billing and management software. Create jpeg/png
+          bills, manage event, manage customer credit/khata, share wedding
+          photos for selection and much more. Everything in one Software 💪
+        </p>
+
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex">
+            <h1 className="text-base font-bold text-indigo-800">
               Photography Manager{" "}
-              <h2 className="text-lg  font-bold px-2">
-                only @
-                <u className="text-2xl px-2 font-extrabold text-purple-700 ">
-                  &#8377; 700 per year
-                </u>
+              <h2 className="text-sm  font-bold px-2">
+                only @ &#8377; 700 per year
               </h2>
             </h1>
           </div>
           <a
             href="https://cloud-gallery-2022.s3.ap-south-1.amazonaws.com/installerWin/mysetup.exe"
-            className="flex items-center justify-center bg-indigo-600 rounded-lg px-3 py-5  my-4 w-full "
+            className="flex items-center justify-center bg-indigo-600 rounded-lg px-3 py-2 my-4"
           >
             <h5 className="text-white font-mono font-bold text-xl">
-              Download | .exe
+              Download Free Demo
             </h5>
           </a>
         </div>
-      </div>
-      <div className="flex flex-col w-full justify-center items-center my-20">
-        <h1 className="text-3xl  font-bold m-5">
-          How to share photos for selection 🤔?
+        <h1 className="text-base md:text-xl underline">
+          System Requirement Windows 10 or above
         </h1>
-        <p className="text-2xl font-bold">
-          Step 1. Go to photo gallery tab. <br /> Step 2. Create folder and
-          upload photo. <br />
-          Step 3. Then copy the link of the folder created and share that link
-          to the customer. Done !
-        </p>
       </div>
-      <div className="flex flex-col justify-center items-center w-full px-40 py-5">
-        <h1 className="text-3xl font-bold mb-6">Main Features</h1>
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-20 ">
-          {featuresList.map((item) => (
-            <Feature des={item.des} title={item.title} />
-          ))}
-        </div>
+
+      <div className="grid md:grid-cols-3 gap-5 w-4/5 mb-14 md:my-20 gap-y-10">
+        {featuresList.map((e) => {
+          return (
+            <div className="flex flex-col text-center mx-5">
+              <h1 className="font-bold text-xl">{e.title}</h1>
+              <p className="font-medium">{e.des}</p>
+            </div>
+          );
+        })}
       </div>
+
       <Footer />
     </div>
   );
