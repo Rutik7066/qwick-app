@@ -66,7 +66,10 @@ export default component$(() => {
       </div>
       <div className="grid lg:grid-cols-4 gap-10 p-5 ">
         {store.data.images.map((image) => (
-          <button onClick$={() => (image.is_selected = !image.is_selected)}>
+          <button
+            className="inline-block"
+            onClick$={() => (image.is_selected = !image.is_selected)}
+          >
             <div className="relative">
               <div className="grid gap-5  grid-cols-3  grid-rows-3 opacity-20 absolute z-50 bottom-0 left-0 top-0 right-0  overflow-hidden">
                 <h1 className="text-[12px] font-medium -rotate-45 ">
@@ -101,6 +104,7 @@ export default component$(() => {
                 Image is only for selection
               </h1>
               <img
+                loading="lazy"
                 src={image.bucket_url}
                 className="pointer-events-none hover:shadow-2xl rounded-xl"
               />
